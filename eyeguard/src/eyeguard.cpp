@@ -1,6 +1,17 @@
 #include "eyeguard.h"
 #include "settingsdialog.h"
 
+/**
+ * @brief Constructor for the main window of the EyeGuard tool.
+ * @param parent Parent widget, usually NULL
+ *
+ * Creates the main window of the EyeGuard tool. It contains the sliders
+ * used to specify the warning timeout, the buttons for about dialog,
+ * advanced options dialog, hide main window and quit program.
+ * This window is also the parent of the system tray icon, but the icon
+ * will be created in a few seconds to be sure system tray is already
+ * available.
+ */
 EyeGuard::EyeGuard ( QWidget * parent /* = 0 */ ):
     QWidget (parent)
 {
@@ -105,6 +116,12 @@ EyeGuard::~EyeGuard ()
     killTimer (p_TimerId);
 }
 
+/**
+ * @brief Loads the program settings.
+ *
+ * Loads the EyeGuard settings from ~/.eyeguard/eyeguard.ini file.
+ * This was tested on Linux only.
+ */
 void EyeGuard::loadSettings (void)
 {
     QSettings prefs (QDir::homePath () + QString ( "/.eyeguard/eyeguard.ini" ), QSettings::IniFormat);
@@ -127,6 +144,12 @@ void EyeGuard::loadSettings (void)
     p_Beep = prefs.value ("Beep", QVariant (0)) .toInt ();
 }
 
+/**
+ * @brief Saves the program settings.
+ *
+ * Saves the EyeGuard settings to ~/.eyeguard/eyeguard.ini file.
+ * This was tested on Linux only.
+ */
 void EyeGuard::saveSettings (void)
 {
     QSettings prefs (QDir::homePath () + QString ( "/.eyeguard/eyeguard.ini" ), QSettings::IniFormat);
@@ -144,6 +167,14 @@ void EyeGuard::saveSettings (void)
     prefs.setValue ("Beep", (int) p_Beep);
 }
 
+/**
+ * @brief Creates the system tray icon if the system tray is available.
+ *
+ * Tries to create the system tray icon for EyeGuard tool. On failure,
+ * shedules another try after 1 second, because the system tray may be
+ * still uninitialized if the program was launched on system startup.
+ * Gives up after 10th failure.
+ */
 void EyeGuard::slotStart (void)
 {
     if (QSystemTrayIcon::isSystemTrayAvailable ()) {
