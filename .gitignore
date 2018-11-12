@@ -1,0 +1,4 @@
+*.user
+*.o
+build-eyeguard-Desktop-Debug/
+build-eyeguard-Desktop-Release/
