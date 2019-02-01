@@ -89,7 +89,7 @@
         <location filename="src/eyeguard.cpp" line="230"/>
         <source>EyeGuard v%1 by Alex Itkes, 2018
 </source>
-        <translation>EyeGuard версии%1. Автор: Алекс Иткес, 2018
+        <translation>EyeGuard версии %1. Автор: Александр Иткес, 2019
 </translation>
     </message>
     <message>

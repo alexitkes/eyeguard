@@ -12,7 +12,7 @@
  * will be created in a few seconds to be sure system tray is already
  * available.
  */
-EyeGuard::EyeGuard ( QWidget * parent /* = 0 */ ):
+EyeGuard::EyeGuard (QWidget * parent):
     QWidget (parent)
 {
     setWindowTitle (tr ("EyeGuard v") + tr (VERSION_STRING));
@@ -109,6 +109,11 @@ EyeGuard::EyeGuard ( QWidget * parent /* = 0 */ ):
     QTimer::singleShot (1000, this, SLOT (slotStart ()));
 }
 
+/**
+ * @brief The EyeGuard main window destructor.
+ *
+ * Saves the program settings to configuration file and releases all resources.
+ */
 EyeGuard::~EyeGuard ()
 {
     saveSettings ();
@@ -124,7 +129,7 @@ EyeGuard::~EyeGuard ()
  */
 void EyeGuard::loadSettings (void)
 {
-    QSettings prefs (QDir::homePath () + QString ( "/.eyeguard/eyeguard.ini" ), QSettings::IniFormat);
+    QSettings prefs (QDir::homePath () + QString ("/.eyeguard/eyeguard.ini"), QSettings::IniFormat);
 
     p_MajorTimeout = prefs.value ("FirstMessageTimeout", QVariant (3600)) .toInt ();
     p_MinorTimeout = prefs.value ("NextMessageTimeout", QVariant (300)) .toInt ();
@@ -182,7 +187,7 @@ void EyeGuard::slotStart (void)
 
         p_SecondsPassed = 0;
 
-        p_TrayIcon = new QSystemTrayIcon ( QIcon ( QPixmap (":/resources/eyeguard.png") ), this );
+        p_TrayIcon = new QSystemTrayIcon (QIcon (QPixmap (":/resources/eyeguard.png")), this);
 
         connect (p_TrayIcon,
                  SIGNAL (activated (QSystemTrayIcon::ActivationReason)),
@@ -209,6 +214,9 @@ void EyeGuard::slotStart (void)
     }
 }
 
+/**
+ * @brief Display the advanced options dialog.
+ */
 void EyeGuard::slotSettings (void)
 {
     SettingsDialog sd (this);
@@ -219,7 +227,6 @@ void EyeGuard::slotSettings (void)
     sd.exec ();
 
     if (sd.result () == QDialog::Accepted) {
-
         if (sd.language () == LNG_Russian) {
             slotRussianLanguage ();
         } else {
@@ -228,10 +235,12 @@ void EyeGuard::slotSettings (void)
 
         p_PromptOnExit = sd.promptOnExit ();
         p_Beep = sd.beepNeeded ();
-
     }
 }
 
+/**
+ * @brief Switch the program language to English.
+ */
 void EyeGuard::slotEnglishLanguage (void)
 {
     p_Language = LNG_English;
@@ -239,6 +248,9 @@ void EyeGuard::slotEnglishLanguage (void)
     SettingsDialog::setApplicationLanguage (p_Language);
 }
 
+/**
+ * @brief Switch the program language to Russian.
+ */
 void EyeGuard::slotRussianLanguage (void)
 {
     p_Language = LNG_Russian;
@@ -246,6 +258,9 @@ void EyeGuard::slotRussianLanguage (void)
     SettingsDialog::setApplicationLanguage (p_Language);
 }
 
+/**
+ * @brief Quit program
+ */
 void EyeGuard::slotQuit (void)
 {
     if (p_PromptOnExit) {
@@ -259,6 +274,9 @@ void EyeGuard::slotQuit (void)
     qApp->quit ();
 }
 
+/**
+ * @brief Displays the about message.
+ */
 void EyeGuard::slotAbout (void)
 {
     QMessageBox::about (this, tr ("About EyeGuard"),
@@ -268,6 +286,9 @@ void EyeGuard::slotAbout (void)
                         tr ("It will begin to display annoying warning messages unless you have a break in a specified amount of time."));
 }
 
+/**
+ * @brief Changes the timeout before displaying the first warning message.
+ */
 void EyeGuard::slotChangeMajorTimeout (int value)
 {
     p_MajorTimeout = value;
@@ -338,6 +359,9 @@ void EyeGuard::slotDisplayNextWarning (void)
     }
 }
 
+/**
+ * @brief Show the main window if the system tray icon has been double-clicked.
+ */
 void EyeGuard::slotHandleTrayIconActivated ( QSystemTrayIcon::ActivationReason reason )
 {
     if (reason == QSystemTrayIcon::DoubleClick) {

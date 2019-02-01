@@ -1,6 +1,9 @@
 #include "settingsdialog.h"
 
-SettingsDialog::SettingsDialog ( QWidget * parent /* = 0 */ ):
+/**
+ * @brief Advanced options dialog constructor.
+ */
+SettingsDialog::SettingsDialog (QWidget * parent):
     QDialog (parent)
 {
     setWindowTitle (tr ("EyeGuard advanced options"));
@@ -63,7 +66,7 @@ SettingsDialog::SettingsDialog ( QWidget * parent /* = 0 */ ):
 
 SettingsDialog::~SettingsDialog ()
 {
-    /* Destructor does nothing... */
+    /* The destructor does nothing... */
 }
 
 int SettingsDialog::language (void) const
@@ -85,7 +88,7 @@ void SettingsDialog::setLanguage (int lang)
 {
     p_Language = lang;
 
-    if (p_Language == LNG_Russian ) {
+    if (p_Language == LNG_Russian) {
         englishButton->setChecked (false);
         russianButton->setChecked (true);
 

@@ -6,99 +6,68 @@
 #include <QSlider>
 #include <QVBoxLayout>
 
+/**
+ * @brief The slider used to select timeout duration of several options.
+ *
+ * A widget containing a text label and a slider.
+ */
 class QTimeoutSlider: public QWidget {
+    Q_OBJECT
 
-	Q_OBJECT;
+public:
 
-    public:
+    enum SpecialValue {
+        Now = 0,
+        Never = -1
+    };
 
-	enum SpecialValue {
-	
-	    Now = 0,
-	    Never = -1
-	
-	};
+public:
+    QTimeoutSlider (QWidget * parent = 0);
 
-    public:
+    ~QTimeoutSlider ();
 
-	QTimeoutSlider ( QWidget * parent = 0 );
-	
-	~QTimeoutSlider ();
+public:
+    bool valid (void) const;
 
-    public:
+    unsigned int value (void) const;
+    unsigned int maximum (void) const;
+    unsigned int minimum (void) const;
 
-	bool
-	valid (void) const;
-	
-	unsigned int
-	value (void) const;
-	unsigned int
-	maximum (void) const;
-	unsigned int
-	minimum (void) const;
+    bool fixedWidthNumbers (void) const;
 
-	bool
-	fixedWidthNumbers (void) const;
+    QString text (void) const;
 
-	QString
-	text (void) const;
+    QString formatString (void) const;
+    QString neverString (void) const;
 
-	QString
-	formatString (void) const;
-	QString
-	neverString (void) const;
+    void setFormatString (const QString & str);
+    void setNeverString (const QString & str);
 
-	void
-	setFormatString ( const QString & str );
-	void
-	setNeverString ( const QString & str );
+public slots:
+    void addValue (unsigned int nsec);
+    void setValue (unsigned int nsec);
+    void delValue (unsigned int nsec);
 
-    public slots:
+    void setFixedWidthNumbers (bool fixed);
 
-	void
-	addValue ( unsigned int nsec );
-	void
-	setValue ( unsigned int nsec );
-	void
-	delValue ( unsigned int nsec );
+protected slots:
+    void slotValueChanged (int val);
+    void slotUpdateLabel (void);
 
-	void
-	setFixedWidthNumbers ( bool fixed );
+signals:
+    void signalValueChanged (int value);
 
-    protected slots:
+private:
+    QSlider *		p_Slider;
+    QLabel *		p_Label;
 
-	void
-	slotValueChanged (int val);
-	void
-	slotUpdateLabel (void);
+    QList<unsigned int>	p_Values;
+    int			p_Current;
 
-    signals:
+    QString			p_FormatString;
+    QString			p_NeverString;
 
-	void
-	signalValueChanged (int value);
-
-    private:
-
-	QSlider *		p_Slider;
-	QLabel *		p_Label;
-	
-	QList<unsigned int>	p_Values;
-	int			p_Current;
-	
-	QString			p_FormatString;
-	QString			p_NeverString;
-	
-	bool			p_FixedWidthNumbers;
-
-    public:
-
-	static int majorVersion (void) { return 0; }
-	static int minorVersion (void) { return 0; }
-	static int microVersion (void) { return 5; }
-	static int buildVersion (void) { return 3; }
-	
-	static QString versionString (void);
-
+    bool			p_FixedWidthNumbers;
 };
 
 #endif
