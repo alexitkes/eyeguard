@@ -3,7 +3,7 @@
 
 /**
  * @brief Constructor for the main window of the EyeGuard tool.
- * @param parent Parent widget, usually NULL
+ * @param parent Parent widget, usually nullptr
  *
  * Creates the main window of the EyeGuard tool. It contains the sliders
  * used to specify the warning timeout, the buttons for about dialog,
@@ -18,7 +18,7 @@ EyeGuard::EyeGuard (QWidget * parent):
     setWindowTitle (tr ("EyeGuard v") + tr (VERSION_STRING));
 
     p_TitleLabel = new QLabel (tr ("EyeGuard"));
-    p_TrayIcon = 0;
+    p_TrayIcon = nullptr;
 
     p_SliderGroup = new QGroupBox (tr ("Options"), this);
 
