@@ -13,7 +13,7 @@ class EyeGuard: public QWidget
     Q_OBJECT
 
 public:
-    EyeGuard (QWidget * parent = 0);
+    EyeGuard (QWidget * parent = nullptr);
 
     ~EyeGuard ();
 
